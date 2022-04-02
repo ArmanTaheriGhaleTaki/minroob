@@ -17,13 +17,13 @@ short int **Field(int rows, int column, int mines)
             field[i][j] = 0;
         }
     }
-    for (int i = 0; i <= mines;i++)
+    for (int i = 0; i <= mines;)
     {
         int x = rand() % rows;
         int y = rand() % column;
-        if (field[x][y] == 0)
+        if (field[x][y] != -1)
         {
-            i--;
+            i++;
             field[x][y] = -1;
             for (int x_temp = x - 1; x_temp <= x + 1; x_temp++)
             {
