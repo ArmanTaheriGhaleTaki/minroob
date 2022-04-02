@@ -17,7 +17,7 @@ short int **Field(int rows, int column, int mines)
             field[i][j] = 0;
         }
     }
-    for (int i = 0; i <= mines;)
+    for (int i = 0; i <= mines;i++)
     {
         int x = rand() % rows;
         int y = rand() % column;
