@@ -2,45 +2,49 @@
 #include <cstdlib>
 #include <ctime>
 #include <time.h>
-// #include <conio.h>
+#include <conio.h>
 #include <windows.h>
-struct field
+#include <vector>
+using std::vector ; 
+struct myfield
 {
     short int area;
     bool visited;
 };
-short int **Field(int rows, int column, int mines)
+vector<vector<myfield>> Field(int rows, int column, int mines)
 {
     srand(time(NULL));
-    short int **field = new short int *[rows];
-    for (int i = 0; i < rows; i++)
-    {
-        field[i] = new short int[column];
-    }
+    vector<vector<myfield>> field ;
+    vector<myfield> myrows ; 
+    myfield temp;
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < column; j++)
         {
-            field[i][j] = 0;
+            temp.area = 0 ; 
+            temp.visited = false ;
+            myrows.push_back(temp);
         }
+        field.push_back(myrows);
+        myrows.clear() ; 
     }
     for (int i = 0; i <= mines;)
     {
         int x = rand() % rows;
         int y = rand() % column;
-        if (field[x][y] != -1)
+        if (field[x][y].area != -1)
         {
             i++;
-            field[x][y] = -1;
+            field[x][y].area = -1;
             for (int x_temp = x - 1; x_temp <= x + 1; x_temp++)
             {
                 for (int y_temp = y - 1; y_temp <= y + 1; y_temp++)
                 {
                     if (x_temp >= 0 && x_temp < rows && y_temp >= 0 && y_temp < column)
                     {
-                        if (field[x_temp][y_temp] != -1)
+                        if (field[x_temp][y_temp].area != -1)
                         {
-                            field[x_temp][y_temp]++;
+                            field[x_temp][y_temp].area++ ;
                         }
                     }
                 }
@@ -53,13 +57,13 @@ void gotoXY(short int x, short int y)
 {
     static HANDLE h = NULL;
     if (!h)
-        h = GetStdHandle(STD_OUTPUT_HANDLE);
+    h = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD c = {x, y};
     SetConsoleCursorPosition(h, c);
 }
 short int main_menu()
 {
-    short int menu_item = 1, x = 7;
+    short int menu_item = 1, y = 7;
     bool running = true;
     gotoXY(18, 5);
     std::cout << "Mine Roob";
@@ -74,22 +78,22 @@ short int main_menu()
         gotoXY(20, 9);
         std::cout << "Quit Program";
         system("pause>nul");                     // the >nul bit causes it the print no message
-        if (GetAsyncKeyState(VK_DOWN) && x != 9) // down button pressed
+        if (GetAsyncKeyState(VK_DOWN) && y != 9) // down button pressed
         {
-            gotoXY(18, x);
+            gotoXY(18, y);
             std::cout << "  ";
-            x++;
-            gotoXY(18, x);
+            y++;
+            gotoXY(18, y);
             std::cout << "->";
             menu_item++;
             continue;
         }
-        if (GetAsyncKeyState(VK_UP) && x != 7) // up button pressed
+        if (GetAsyncKeyState(VK_UP) && y != 7) // up button pressed
         {
-            gotoXY(18, x);
+            gotoXY(18, y);
             std::cout << "  ";
-            x--;
-            gotoXY(18, x);
+            y--;
+            gotoXY(18, y);
             std::cout << "->";
             menu_item--;
             continue;
@@ -102,7 +106,7 @@ short int main_menu()
     }
     return 0;
 }
-void play(short int **Field, int rows, int column, int mines)
+void play(vector<vector<myfield>> Field, int rows, int column, int mines)
 {
     int x_posiont = 4, y_position = 0;
     std::cout << "Enter first player's name: \n";
@@ -136,7 +140,7 @@ void play(short int **Field, int rows, int column, int mines)
         {
             for (int j = 0; j < column; j++)
             {
-                if (Field[i][j] == -1)
+                if (Field[i][j].area == -1)
                 {
                     gotoXY(j + 4, i + 4);
                 }
