@@ -5,7 +5,8 @@
 #include <conio.h>
 #include <windows.h>
 #include <vector>
-using std::vector ; 
+#include <iomanip>
+using std::vector;
 struct myfield
 {
     short int area;
@@ -14,19 +15,19 @@ struct myfield
 vector<vector<myfield>> Field(int rows, int column, int mines)
 {
     srand(time(NULL));
-    vector<vector<myfield>> field ;
-    vector<myfield> myrows ; 
+    vector<vector<myfield>> field;
+    vector<myfield> myrows;
     myfield temp;
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < column; j++)
         {
-            temp.area = 0 ; 
-            temp.visited = false ;
+            temp.area = 0;
+            temp.visited = false;
             myrows.push_back(temp);
         }
         field.push_back(myrows);
-        myrows.clear() ; 
+        myrows.clear();
     }
     for (int i = 0; i <= mines;)
     {
@@ -44,7 +45,7 @@ vector<vector<myfield>> Field(int rows, int column, int mines)
                     {
                         if (field[x_temp][y_temp].area != -1)
                         {
-                            field[x_temp][y_temp].area++ ;
+                            field[x_temp][y_temp].area++;
                         }
                     }
                 }
@@ -57,7 +58,7 @@ void gotoXY(short int x, short int y)
 {
     static HANDLE h = NULL;
     if (!h)
-    h = GetStdHandle(STD_OUTPUT_HANDLE);
+        h = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD c = {x, y};
     SetConsoleCursorPosition(h, c);
 }
@@ -108,7 +109,7 @@ short int main_menu()
 }
 void play(vector<vector<myfield>> Field, int rows, int column, int mines)
 {
-    int x_posiont = 4, y_position = 0;
+    int y_position = 5, x_position = 2;
     std::cout << "Enter first player's name: \n";
     std::string player_1_name;
     std::getline(std::cin, player_1_name);
@@ -118,6 +119,7 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
     int mine_collected_player_1 = 0;
     int mine_collected_player_2 = 0;
     bool running = true;
+    bool running_arrowkey = true;
     bool round = true;
     while (running)
     {
@@ -140,9 +142,70 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
         {
             for (int j = 0; j < column; j++)
             {
-                if (Field[i][j].area == -1)
+                if (Field[i][j].visited == 0)
                 {
-                    gotoXY(j + 4, i + 4);
+                    std::cout << std::setw(5) << std::setfill(' ') << "#";
+                }
+                else
+                {
+                    if (Field[i][j].area == -1)
+                    {
+                        std::cout << std::setw(5) << std::setfill(' ') << "*";
+                    }
+                    else
+                    {
+                        std::cout << std::setw(5) << std::setfill(' ') << Field[i][j].area;
+                    }
+                }
+            }
+                std::cout<<std::endl;
+        }
+        gotoXY(x_position, y_position);
+        std::cout<< "->";
+        while (running_arrowkey)
+        {
+        system("pause>nul"); // the >nul bit causes it the print no message
+            if (GetAsyncKeyState(VK_DOWN) && y_position != 4 + rows) // down button pressed
+            {
+                gotoXY(x_position, y_position);
+                std::cout << "  ";
+                y_position++;
+                gotoXY(x_position, y_position);
+                std::cout << "->";
+                continue;
+            }
+            if (GetAsyncKeyState(VK_UP) && y_position != 4) // up button pressed
+            {
+                gotoXY(x_position, y_position);
+                std::cout << "  ";
+                y_position--;
+                gotoXY(x_position, y_position);
+                std::cout << "->";
+                continue;
+            }
+            if (GetAsyncKeyState(VK_RIGHT) && x_position != 2) // right button pressed
+            {
+                gotoXY(x_position, y_position);
+                std::cout << "  ";
+                x_position++;
+                gotoXY(x_position, y_position);
+                std::cout << "->";
+                continue;
+            }
+            if (GetAsyncKeyState(VK_LEFT) && x_position != 2 + 5 * column ) // left button pressed
+            {
+                gotoXY(x_position, y_position);
+                std::cout << "  ";
+                x_position--;
+                gotoXY(x_position, y_position);
+                std::cout << "->";
+            }
+            if (GetAsyncKeyState(VK_RETURN))
+            {
+                if (Field[y_position][x_position].visited == 0)
+                {
+                    Field[y_position][x_position].visited = 1;
+                    running_arrowkey = false;
                 }
             }
         }
