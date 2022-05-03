@@ -109,7 +109,7 @@ short int main_menu()
 }
 void play(vector<vector<myfield>> Field, int rows, int column, int mines)
 {
-    int y_position = 5, x_position = 2;
+    int y_position = 4, x_position = 2;
     std::cout << "Enter first player's name: \n";
     std::string player_1_name;
     std::getline(std::cin, player_1_name);
@@ -158,14 +158,14 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
                     }
                 }
             }
-                std::cout<<std::endl;
+            std::cout << std::endl;
         }
         gotoXY(x_position, y_position);
-        std::cout<< "->";
+        std::cout << "->";
         while (running_arrowkey)
         {
-        system("pause>nul"); // the >nul bit causes it the print no message
-            if (GetAsyncKeyState(VK_DOWN) && y_position != 4 + rows) // down button pressed
+            system("pause>nul");                                     // the >nul bit causes it the print no message
+            if (GetAsyncKeyState(VK_DOWN) && y_position != 4 + rows-1) // down button pressed
             {
                 gotoXY(x_position, y_position);
                 std::cout << "  ";
@@ -183,20 +183,20 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
                 std::cout << "->";
                 continue;
             }
-            if (GetAsyncKeyState(VK_RIGHT) && x_position != 2) // right button pressed
+            if (GetAsyncKeyState(VK_RIGHT) && x_position != (2 + 5 * column)) // right button pressed
             {
                 gotoXY(x_position, y_position);
                 std::cout << "  ";
-                x_position++;
+                x_position += 5;
                 gotoXY(x_position, y_position);
                 std::cout << "->";
                 continue;
             }
-            if (GetAsyncKeyState(VK_LEFT) && x_position != 2 + 5 * column ) // left button pressed
+            if (GetAsyncKeyState(VK_LEFT) && x_position != 2) // left button pressed
             {
                 gotoXY(x_position, y_position);
                 std::cout << "  ";
-                x_position--;
+                x_position -= 5;
                 gotoXY(x_position, y_position);
                 std::cout << "->";
             }
