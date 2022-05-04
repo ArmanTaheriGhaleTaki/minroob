@@ -73,26 +73,21 @@ short int main_menu()
     short int menu_item = 1;
     short int default_x = 18, default_y = 7; 
     bool running = true;
-    bool first_time = true ;
-    bool needed = false ; 
+    bool overwriting_is_needed = false ; 
+    system("cls") ;
+    gotoXY(18, 5);
+    std::cout << "Mine Roob";
+    gotoXY(18,7) ;
+    std::cout<<"->" ;
+    gotoXY(20, 7);
+    std::cout << "1) Play";
+    gotoXY(20, 8);
+    std::cout << "2) How to play";
+    gotoXY(20, 9);
+    std::cout << "3) Quit Program";  
     while (running)
-    {            // the >nul bit causes it the print no message
-        if(first_time){
-            system("cls") ;
-            gotoXY(18, 5);
-            std::cout << "Mine Roob";
-            gotoXY(18,7) ;
-            std::cout<<"->" ;
-            gotoXY(20, 7);
-            std::cout << "1) Play";
-            gotoXY(20, 8);
-            std::cout << "2) How to play";
-            gotoXY(20, 9);
-            std::cout << "3) Quit Program";  
-            first_time = false ; 
-        }
-        else {
-           if(needed==true){
+    {     
+           if(overwriting_is_needed==true){
             system("cls") ;
             gotoXY(18, 5);
             std::cout << "Mine Roob";
@@ -104,9 +99,9 @@ short int main_menu()
             std::cout << "2) How to play";
             gotoXY(20, 9);
             std::cout << "3) Quit Program";
-            needed = false ; 
+            overwriting_is_needed = false ; 
            }
-        }
+        
    int ch ;
    ch = _getch ();
    if (ch == 0 || ch == 224)
@@ -122,7 +117,7 @@ short int main_menu()
                 default_y = 9 ;
                 menu_item = 3 ; 
             }
-            needed = true ;
+            overwriting_is_needed = true ;
             break;
 
         case KEY_DOWN:
@@ -134,13 +129,12 @@ short int main_menu()
                 menu_item = 1 ; 
                 default_y = 7 ;
             }
-            needed = true ; 
+            overwriting_is_needed = true ; 
             break;
         case KEY_RIGHT:
             running = false ; 
             break;
-        default:
-            needed = true ; 
+        default: 
             break ; 
 
         /* ... etc ... */
