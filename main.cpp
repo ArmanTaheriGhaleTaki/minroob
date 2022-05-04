@@ -4,6 +4,8 @@
 #include <vector>
 int main()
 {
+
+
     short int menu_item = main_menu();
     int rows = 8;
     int column = 7;
@@ -15,12 +17,14 @@ int main()
     case 1:
         play(field,rows,column,mines);
         break;
-    case 2: 
-        // show_how_to_play();
+    case 2:
+        show_how_to_play();
         break;
     case 3:
-        // return 0;
-        // break;
-    return 0;
+        return 0;
+        break;
+    default:
+        std::cout << "there is a problem with our program" << std::endl  ; 
 }
+return 0;
 }

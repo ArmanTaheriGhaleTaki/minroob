@@ -7,6 +7,10 @@
 #include <vector>
 #include <iomanip>
 using std::vector;
+#define KEY_UP 72
+#define KEY_DOWN 80
+#define KEY_LEFT 75
+#define KEY_RIGHT 77
 struct myfield
 {
     short int area;
@@ -58,54 +62,99 @@ void gotoXY(short int x, short int y)
 {
     static HANDLE h = NULL;
     if (!h)
-        h = GetStdHandle(STD_OUTPUT_HANDLE);
+    {
+         h = GetStdHandle(STD_OUTPUT_HANDLE);
+    }
     COORD c = {x, y};
     SetConsoleCursorPosition(h, c);
 }
 short int main_menu()
 {
-    short int menu_item = 1, y = 7;
+    short int menu_item = 1;
+    short int default_x = 18, default_y = 7; 
     bool running = true;
-    gotoXY(18, 5);
-    std::cout << "Mine Roob";
-    gotoXY(18, 7);
-    std::cout << "->";
+    bool first_time = true ;
+    bool needed = false ; 
     while (running)
+    {            // the >nul bit causes it the print no message
+        if(first_time){
+            system("cls") ;
+            gotoXY(18, 5);
+            std::cout << "Mine Roob";
+            gotoXY(18,7) ;
+            std::cout<<"->" ;
+            gotoXY(20, 7);
+            std::cout << "1) Play";
+            gotoXY(20, 8);
+            std::cout << "2) How to play";
+            gotoXY(20, 9);
+            std::cout << "3) Quit Program";  
+            first_time = false ; 
+        }
+        else {
+           if(needed==true){
+            system("cls") ;
+            gotoXY(18, 5);
+            std::cout << "Mine Roob";
+            gotoXY(default_x, default_y);
+            std::cout<<"->" ;
+            gotoXY(20, 7);
+            std::cout << "1) Play";
+            gotoXY(20, 8);
+            std::cout << "2) How to play";
+            gotoXY(20, 9);
+            std::cout << "3) Quit Program";
+            needed = false ; 
+           }
+        }
+   int ch ;
+   ch = _getch ();
+   if (ch == 0 || ch == 224)
     {
-        gotoXY(20, 7);
-        std::cout << "1) Play";
-        gotoXY(20, 8);
-        std::cout << "2) How to play";
-        gotoXY(20, 9);
-        std::cout << "Quit Program";
-        system("pause>nul");                     // the >nul bit causes it the print no message
-        if (GetAsyncKeyState(VK_DOWN) && y != 9) // down button pressed
-        {
-            gotoXY(18, y);
-            std::cout << "  ";
-            y++;
-            gotoXY(18, y);
-            std::cout << "->";
-            menu_item++;
-            continue;
-        }
-        if (GetAsyncKeyState(VK_UP) && y != 7) // up button pressed
-        {
-            gotoXY(18, y);
-            std::cout << "  ";
-            y--;
-            gotoXY(18, y);
-            std::cout << "->";
+    int gch = _getch () ; 
+    switch (gch)
+    {
+        case KEY_UP:
+            /* Code for up arrow handling */
+            default_y--;
             menu_item--;
-            continue;
-        }
-        if (GetAsyncKeyState(VK_RETURN))
-        {
-            std::cout << std::endl;
-            return menu_item;
-        }
+            if(default_y<7){
+                default_y = 9 ;
+                menu_item = 3 ; 
+            }
+            needed = true ;
+            break;
+
+        case KEY_DOWN:
+            /* Code for down arrow handling */
+            default_y++;
+            menu_item++;
+            if(default_y>9)
+            {
+                menu_item = 1 ; 
+                default_y = 7 ;
+            }
+            needed = true ; 
+            break;
+        case KEY_RIGHT:
+            running = false ; 
+            break;
+        default:
+            needed = true ; 
+            break ; 
+
+        /* ... etc ... */
     }
-    return 0;
+}
+    else {
+        if(ch == 13){
+            running = false ; 
+        }
+        
+    }
+    }
+    system("cls") ; 
+    return menu_item;
 }
 void play(vector<vector<myfield>> Field, int rows, int column, int mines)
 {
@@ -211,4 +260,6 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
         }
     }
 }
-void show_how_to_play();
+void show_how_to_play(){
+    std::cout << "how to play" <<std::endl; 
+}
