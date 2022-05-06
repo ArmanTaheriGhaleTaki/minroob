@@ -191,13 +191,13 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
     players_status[true] = mine_collected_player_1;
     players_status[false] = mine_collected_player_2;
     bool running = true;
-    bool running_arrowkey = true;
+    bool running_arrowkey;
     bool round = true;
     while (running)
     {
         system("cls");
-        std::cout << player_1_name << ": " << mine_collected_player_1 << "\n";
-        std::cout << player_2_name << ": " << mine_collected_player_2 << "\n";
+        std::cout << player_1_name << ": " << players_status[true] << "\n";
+        std::cout << player_2_name << ": " << players_status[false] << "\n";
         if (round)
         {
             std::cout << "\n"<< player_1_name << "\'s turn\n";
@@ -209,6 +209,7 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
         print_field(Field , rows, column) ;
         gotoXY(x_position, y_position);
         std::cout << "->";
+        running_arrowkey = true ; 
         while (running_arrowkey)
         {
         int ch ;
@@ -274,13 +275,14 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
 }
     else {
         if(ch == 13){
-            if (Field[field_column][field_row].visited == 0)
+            if (Field[field_row][field_column].visited == 0)
                 {
-                    Field[field_column][field_row].visited = 1;
-                    if(Field[field_column][field_row].area!=-1){
+                    Field[field_row][field_column].visited = 1;
+                    if(Field[field_row][field_column].area!=-1){
                         x_position = 2 ; 
                         y_position = 4 ;
-                        running_arrowkey = false;
+                        field_row = 0 ; 
+                        field_column = 0 ; 
                         if(round){
                             round = false ; 
                         }
@@ -296,7 +298,7 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
                             players_status[false] = players_status[false]+1 ; 
                         }
                     }
-                    
+                    running_arrowkey = false;
                 }
         }
         
