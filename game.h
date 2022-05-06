@@ -34,7 +34,7 @@ vector<vector<myfield>> Field(int rows, int column, int mines)
         field.push_back(myrows);
         myrows.clear();
     }
-    for (int i = 0; i <= mines;)
+    for (int i = 0; i < mines;)
     {
         int x = rand() % rows;
         int y = rand() % column;
@@ -198,7 +198,20 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
         system("cls");
         std::cout << player_1_name << ": " << players_status[true] << "\n";
         std::cout << player_2_name << ": " << players_status[false] << "\n";
-        if (round)
+        if(players_status[true]+players_status[false] == mines ){
+             if(players_status[true]==players_status[false]){
+               std::cout << "both of you are winner :D " ; 
+             }
+             else if(players_status[true]>players_status[false]){
+               std::cout << "player " << player_1_name << " is winner :)" << std::endl ; 
+             }
+             else {
+              std::cout << "player " << player_2_name << " is winner :)" << std::endl ; 
+             }
+             running = false ; 
+        }
+        else {
+                   if (round)
         {
             std::cout << "\n"<< player_1_name << "\'s turn\n";
         }
@@ -303,6 +316,7 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
         }
         
     }
+        }
         }
     }
 }
