@@ -6,6 +6,7 @@
 #include <windows.h>
 #include <vector>
 #include <iomanip>
+#include <map>
 using std::vector;
 #define KEY_UP 72
 #define KEY_DOWN 80
@@ -177,6 +178,7 @@ void print_field(vector<vector<myfield>> Field, int rows, int column){
 void play(vector<vector<myfield>> Field, int rows, int column, int mines)
 {
     int y_position = 4, x_position = 2;
+    int field_row = 0, field_column = 0 ; 
     std::cout << "Enter first player's name: \n";
     std::string player_1_name;
     std::getline(std::cin, player_1_name);
@@ -185,6 +187,9 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
     std::getline(std::cin, player_2_name);
     int mine_collected_player_1 = 0;
     int mine_collected_player_2 = 0;
+    std::map<bool,int> players_status ; 
+    players_status[true] = mine_collected_player_1;
+    players_status[false] = mine_collected_player_2;
     bool running = true;
     bool running_arrowkey = true;
     bool round = true;
@@ -196,12 +201,10 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
         if (round)
         {
             std::cout << "\n"<< player_1_name << "\'s turn\n";
-            round = false;
         }
         else
         {
             std::cout << "\n"<< player_2_name << "\'s turn\n";
-            round = true;
         }
         print_field(Field , rows, column) ;
         gotoXY(x_position, y_position);
@@ -219,8 +222,10 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
             gotoXY(x_position, y_position);
             std::cout << "  ";
             y_position--;
+            field_row--;
             if(y_position<4){
-                y_position+=rows ; 
+                y_position+=rows ;
+                field_row = rows - 1 ; 
             }
             gotoXY(x_position, y_position);
             std::cout << "->";
@@ -229,8 +234,10 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
                 gotoXY(x_position, y_position);
                 std::cout << "  ";
                 y_position++;
+                field_row++ ; 
                 if(y_position>(3+rows)){
                  y_position=4 ; 
+                 field_row = 0 ;
                 }
                 gotoXY(x_position, y_position);
                 std::cout << "->";
@@ -239,8 +246,10 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
             gotoXY(x_position, y_position);
             std::cout << "  ";
             x_position += 5;
+            field_column++ ; 
             if(x_position>(2+(column-1)*5)){
                  x_position=2 ; 
+                 field_column = 0 ;
             }
             gotoXY(x_position, y_position);
             std::cout << "->";
@@ -249,8 +258,10 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
                 gotoXY(x_position, y_position);
                 std::cout << "  ";
                 x_position -= 5;
+                field_column-- ; 
                 if(x_position<2){
                   x_position = (2+(column-1)*5) ; 
+                  field_column = column-1 ; 
                 }
                 gotoXY(x_position, y_position);
                 std::cout << "->";
@@ -263,10 +274,29 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
 }
     else {
         if(ch == 13){
-            if (Field[y_position][x_position].visited == 0)
+            if (Field[field_column][field_row].visited == 0)
                 {
-                    Field[y_position][x_position].visited = 1;
-                    running_arrowkey = false;
+                    Field[field_column][field_row].visited = 1;
+                    if(Field[field_column][field_row].area!=-1){
+                        x_position = 2 ; 
+                        y_position = 4 ;
+                        running_arrowkey = false;
+                        if(round){
+                            round = false ; 
+                        }
+                        else {
+                            round = true ; 
+                        }
+                    }
+                    else {
+                        if(round){
+                            players_status[true] = players_status[true]+1 ; 
+                        }
+                        else {
+                            players_status[false] = players_status[false]+1 ; 
+                        }
+                    }
+                    
                 }
         }
         
