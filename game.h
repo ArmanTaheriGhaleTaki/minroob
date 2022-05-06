@@ -235,6 +235,7 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
     std::string player_1_name;
     std::string player_2_name;
     while(status_players_name == false) {
+          std::cout << "\npresss ESC or x to exit the game when playing ... \n";
           std::cout << "Enter first player's name: \n";    
           std::getline(std::cin, player_1_name);
           std::cout << "Enter second player's name: \n";
@@ -260,7 +261,7 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
         system("cls");
         std::cout << player_1_name << ": " << players_status[true] << "\n";
         std::cout << player_2_name << ": " << players_status[false] << "\n";
-        if(players_status[true]+players_status[false] == mines ){
+        if(players_status[true]==(mines/2)+1 || players_status[false] == (mines/2)+1 ){
              if(players_status[true]==players_status[false]){
                std::cout << "both of you are winner :D " ; 
              }
@@ -382,6 +383,14 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
                     }
                     running_arrowkey = false;
                 }
+        }
+        else {
+            if(ch == 27 || ch==120){
+                running_arrowkey = false ;
+                running = false ;
+                system("cls") ; 
+                std::cout << "bye bye game :)" ; 
+            }
         }
         
     }

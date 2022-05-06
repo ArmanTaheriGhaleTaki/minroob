@@ -5,7 +5,6 @@
 #include <map>
 int main()
 {
-
     short int menu_item = main_menu();
     int rows = 8;
     int column = 7;
