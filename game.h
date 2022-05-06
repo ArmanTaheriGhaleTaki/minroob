@@ -389,5 +389,6 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
     }
 }
 void show_how_to_play(){
-    std::cout << "http://usethefuckinggoogle.com" <<std::endl; 
+        char *url = (char *)"www.just-fucking-google.it/?s=how%20to%20play%20minesweeper%20PVP%3F&e=finger";
+        ShellExecute(NULL, NULL, url, NULL, NULL, SW_SHOWNORMAL);
 }
