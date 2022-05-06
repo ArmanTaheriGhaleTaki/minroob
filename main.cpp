@@ -9,7 +9,7 @@ int main()
     short int menu_item = main_menu();
     int rows = 8;
     int column = 7;
-    int mines = 10;
+    int mines = 12;
     vector<vector<myfield>> field;
     field = Field(rows, column, mines);
     switch (menu_item)

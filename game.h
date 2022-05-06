@@ -17,6 +17,7 @@ struct myfield
     short int area;
     bool visited;
 };
+vector<vector<myfield>> global_field ; 
 vector<vector<myfield>> Field(int rows, int column, int mines)
 {
     srand(time(NULL));
@@ -166,6 +167,9 @@ void print_field(vector<vector<myfield>> Field, int rows, int column){
                     {
                         std::cout << std::setw(5) << std::setfill(' ') << "*";
                     }
+                    else if(Field[i][j].area == 0)  {
+                        std::cout << std::setw(5) << std::setfill(' ') << "O";
+                    }
                     else
                     {
                         std::cout << std::setw(5) << std::setfill(' ') << Field[i][j].area;
@@ -174,6 +178,53 @@ void print_field(vector<vector<myfield>> Field, int rows, int column){
             }
             std::cout << std::endl;
         }
+}
+
+void if_area_is_zero(int field_row , int field_column , int rows , int column){
+                            int previous_row = 0 , previous_column = 0 , next_row = 0 , next_column = 0 ;
+                            std::cout << field_row << field_column << std::endl ;
+                            if(field_row==rows-1){
+                                previous_row = field_row -1 ; 
+                                next_row = field_row ; 
+                            }
+                            else if(field_row==0){
+                                previous_row = field_row ; 
+                                next_row = field_row + 1 ; 
+                            }
+                            else {
+                                previous_row = field_row -1 ; 
+                                next_row = field_row + 1 ; 
+                            }
+                            if(field_column==column-1){
+                                previous_column = field_column -1 ; 
+                                next_column = field_column ; 
+                            }
+                            else if(field_column==0){
+                                previous_column = field_column ; 
+                                next_column = field_column + 1 ; 
+                            }
+                            else {
+                                previous_column = field_column -1 ; 
+                                next_column = field_column + 1 ; 
+                            }
+                            for(int k = previous_row ; k<=next_row ; k++){
+                                for(int p = previous_column ; p<=next_column ; p++){                                    
+                                        
+                                        if(k!=field_row || p!=field_column){
+                                         if(global_field[k][p].area==0){
+                                            if(global_field[k][p].visited==0){
+                                                global_field[k][p].visited = 1; 
+                                                if_area_is_zero(k,p , rows , column) ; 
+                                            }
+                                            
+                                         }
+                                         else {
+                                            global_field[k][p].visited = 1 ;
+                                         }        
+                                        }
+                                       
+                                }
+                            }
 }
 void play(vector<vector<myfield>> Field, int rows, int column, int mines)
 {
@@ -292,10 +343,17 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
                 {
                     Field[field_row][field_column].visited = 1;
                     if(Field[field_row][field_column].area!=-1){
+                        if(Field[field_row][field_column].area == 0){
+                           Field[field_row][field_column].visited = 0;
+                           global_field = Field ; 
+                           if_area_is_zero(field_row , field_column , rows , column)  ;
+                           Field = global_field ;
+                           Field[field_row][field_column].visited = 1;
+                        }
                         x_position = 2 ; 
                         y_position = 4 ;
                         field_row = 0 ; 
-                        field_column = 0 ; 
+                        field_column = 0 ;
                         if(round){
                             round = false ; 
                         }
