@@ -150,38 +150,8 @@ short int main_menu()
     system("cls") ; 
     return menu_item;
 }
-void play(vector<vector<myfield>> Field, int rows, int column, int mines)
-{
-    int y_position = 4, x_position = 2;
-    std::cout << "Enter first player's name: \n";
-    std::string player_1_name;
-    std::getline(std::cin, player_1_name);
-    std::cout << "Enter second player's name: \n";
-    std::string player_2_name;
-    std::getline(std::cin, player_2_name);
-    int mine_collected_player_1 = 0;
-    int mine_collected_player_2 = 0;
-    bool running = true;
-    bool running_arrowkey = true;
-    bool round = true;
-    while (running)
-    {
-        system("cls");
-        std::cout << player_1_name << ": " << mine_collected_player_1 << "\n";
-        std::cout << player_2_name << ": " << mine_collected_player_2 << "\n";
-        if (round)
-        {
-            std::cout << "\n"
-                      << player_1_name << "\'s turn\n";
-            round = false;
-        }
-        else
-        {
-            std::cout << "\n"
-                      << player_2_name << "\'s turn\n";
-            round = true;
-        }
-        for (int i = 0; i < rows; i++)
+void print_field(vector<vector<myfield>> Field, int rows, int column){
+    for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < column; j++)
             {
@@ -203,54 +173,104 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
             }
             std::cout << std::endl;
         }
+}
+void play(vector<vector<myfield>> Field, int rows, int column, int mines)
+{
+    int y_position = 4, x_position = 2;
+    std::cout << "Enter first player's name: \n";
+    std::string player_1_name;
+    std::getline(std::cin, player_1_name);
+    std::cout << "Enter second player's name: \n";
+    std::string player_2_name;
+    std::getline(std::cin, player_2_name);
+    int mine_collected_player_1 = 0;
+    int mine_collected_player_2 = 0;
+    bool running = true;
+    bool running_arrowkey = true;
+    bool round = true;
+    while (running)
+    {
+        system("cls");
+        std::cout << player_1_name << ": " << mine_collected_player_1 << "\n";
+        std::cout << player_2_name << ": " << mine_collected_player_2 << "\n";
+        if (round)
+        {
+            std::cout << "\n"<< player_1_name << "\'s turn\n";
+            round = false;
+        }
+        else
+        {
+            std::cout << "\n"<< player_2_name << "\'s turn\n";
+            round = true;
+        }
+        print_field(Field , rows, column) ;
         gotoXY(x_position, y_position);
         std::cout << "->";
         while (running_arrowkey)
         {
-            system("pause>nul");                                     // the >nul bit causes it the print no message
-            if (GetAsyncKeyState(VK_DOWN) && y_position != 4 + rows-1) // down button pressed
-            {
+        int ch ;
+        ch = _getch ();
+        if (ch == 0 || ch == 224)
+        {
+        int gch = _getch () ; 
+        switch (gch)
+        {
+        case KEY_UP:
+            gotoXY(x_position, y_position);
+            std::cout << "  ";
+            y_position--;
+            if(y_position<4){
+                y_position+=rows ; 
+            }
+            gotoXY(x_position, y_position);
+            std::cout << "->";
+            break;
+        case KEY_DOWN:
                 gotoXY(x_position, y_position);
                 std::cout << "  ";
                 y_position++;
+                if(y_position>(3+rows)){
+                 y_position=4 ; 
+                }
                 gotoXY(x_position, y_position);
                 std::cout << "->";
-                continue;
+                break;
+        case KEY_RIGHT:
+            gotoXY(x_position, y_position);
+            std::cout << "  ";
+            x_position += 5;
+            if(x_position>(2+(column-1)*5)){
+                 x_position=2 ; 
             }
-            if (GetAsyncKeyState(VK_UP) && y_position != 4) // up button pressed
-            {
-                gotoXY(x_position, y_position);
-                std::cout << "  ";
-                y_position--;
-                gotoXY(x_position, y_position);
-                std::cout << "->";
-                continue;
-            }
-            if (GetAsyncKeyState(VK_RIGHT) && x_position != (2 + 5 * column)) // right button pressed
-            {
-                gotoXY(x_position, y_position);
-                std::cout << "  ";
-                x_position += 5;
-                gotoXY(x_position, y_position);
-                std::cout << "->";
-                continue;
-            }
-            if (GetAsyncKeyState(VK_LEFT) && x_position != 2) // left button pressed
-            {
+            gotoXY(x_position, y_position);
+            std::cout << "->";
+            break;
+        case KEY_LEFT:
                 gotoXY(x_position, y_position);
                 std::cout << "  ";
                 x_position -= 5;
+                if(x_position<2){
+                  x_position = (2+(column-1)*5) ; 
+                }
                 gotoXY(x_position, y_position);
                 std::cout << "->";
-            }
-            if (GetAsyncKeyState(VK_RETURN))
-            {
-                if (Field[y_position][x_position].visited == 0)
+                break;
+        default: 
+            break ; 
+
+        /* ... etc ... */
+    }
+}
+    else {
+        if(ch == 13){
+            if (Field[y_position][x_position].visited == 0)
                 {
                     Field[y_position][x_position].visited = 1;
                     running_arrowkey = false;
                 }
-            }
+        }
+        
+    }
         }
     }
 }
