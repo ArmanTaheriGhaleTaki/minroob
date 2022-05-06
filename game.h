@@ -230,12 +230,22 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
 {
     int y_position = 4, x_position = 2;
     int field_row = 0, field_column = 0 ; 
-    std::cout << "Enter first player's name: \n";
+    bool status_players_name = false ;
     std::string player_1_name;
-    std::getline(std::cin, player_1_name);
-    std::cout << "Enter second player's name: \n";
     std::string player_2_name;
-    std::getline(std::cin, player_2_name);
+    while(status_players_name == false) {
+          std::cout << "Enter first player's name: \n";    
+          std::getline(std::cin, player_1_name);
+          std::cout << "Enter second player's name: \n";
+          std::getline(std::cin, player_2_name);
+          if(player_1_name == player_2_name ){
+                system("cls") ;
+                std::cout << "ERROR! | Names are the same, please enter different names.\n";
+          }
+          else {
+                status_players_name = true ;
+          }
+    }
     int mine_collected_player_1 = 0;
     int mine_collected_player_2 = 0;
     std::map<bool,int> players_status ; 
