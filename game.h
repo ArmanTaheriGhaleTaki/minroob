@@ -7,6 +7,7 @@
 #include <vector>
 #include <iomanip>
 #include <map>
+#include <tchar.h>
 using std::vector;
 #define KEY_UP 72
 #define KEY_DOWN 80
@@ -389,6 +390,5 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
     }
 }
 void show_how_to_play(){
-        char *url = (char *)"www.just-fucking-google.it/?s=how%20to%20play%20minesweeper%20PVP%3F&e=finger";
-        ShellExecute(NULL, NULL, url, NULL, NULL, SW_SHOWNORMAL);
+        ShellExecute(NULL, NULL, _T("www.just-fucking-google.it/?s=how%20to%20play%20minesweeper%20PVP%3F&e=finger"), NULL, NULL, SW_SHOWNORMAL);
 }
