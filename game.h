@@ -18,7 +18,7 @@ struct myfield
     short int area;
     bool visited;
 };
-vector<vector<myfield>> global_field ; 
+vector<vector<myfield>> global_field ;
 vector<vector<myfield>> Field(int rows, int column, int mines)
 {
     srand(time(NULL));
@@ -227,27 +227,27 @@ void if_area_is_zero(int field_row , int field_column , int rows , int column){
                                 }
                             }
 }
-void play(vector<vector<myfield>> Field, int rows, int column, int mines)
+void play()
 {
+    int rows = 8;
+    int column = 7;
+    int mines = 12;
+    vector<vector<myfield>> field;
+    field = Field(rows, column, mines);
     int y_position = 4, x_position = 2;
     int field_row = 0, field_column = 0 ; 
-    bool status_players_name = false ;
     std::string player_1_name;
     std::string player_2_name;
-    while(status_players_name == false) {
           std::cout << "\npresss ESC or x to exit the game when playing ... \n";
           std::cout << "Enter first player's name: \n";    
           std::getline(std::cin, player_1_name);
           std::cout << "Enter second player's name: \n";
           std::getline(std::cin, player_2_name);
           if(player_1_name == player_2_name ){
-                system("cls") ;
-                std::cout << "ERROR! | Names are the same, please enter different names.\n";
+                player_1_name+="1" ;
+                player_2_name+="2" ;
           }
-          else {
-                status_players_name = true ;
-          }
-    }
+    
     int mine_collected_player_1 = 0;
     int mine_collected_player_2 = 0;
     std::map<bool,int> players_status ; 
@@ -274,7 +274,7 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
             running = false ; 
         }
         else {
-                      if(players_status[true]==(mines/2)+1 || players_status[false] == (mines/2)+1 ){
+            if(players_status[true]==(mines/2)+1 || players_status[false] == (mines/2)+1 ){
              if(players_status[true]==players_status[false]){
                std::cout << "both of you are winner :D " ; 
              }
@@ -295,7 +295,7 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
         {
             std::cout << "\n"<< player_2_name << "\'s turn\n";
         }
-        print_field(Field , rows, column) ;
+        print_field(field , rows, column) ;
         gotoXY(x_position, y_position);
         std::cout << "->";
         running_arrowkey = true ; 
@@ -364,16 +364,16 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
 }
     else {
         if(ch == 13){
-            if (Field[field_row][field_column].visited == 0)
+            if (field[field_row][field_column].visited == 0)
                 {
-                    Field[field_row][field_column].visited = 1;
-                    if(Field[field_row][field_column].area!=-1){
-                        if(Field[field_row][field_column].area == 0){
-                           Field[field_row][field_column].visited = 0;
-                           global_field = Field ; 
+                    field[field_row][field_column].visited = 1;
+                    if(field[field_row][field_column].area!=-1){
+                        if(field[field_row][field_column].area == 0){
+                           field[field_row][field_column].visited = 0;
+                           global_field = field ; 
                            if_area_is_zero(field_row , field_column , rows , column)  ;
-                           Field = global_field ;
-                           Field[field_row][field_column].visited = 1;
+                           field = global_field ;
+                           field[field_row][field_column].visited = 1;
                         }
                         x_position = 2 ; 
                         y_position = 4 ;
@@ -412,4 +412,19 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
 }
 void show_how_to_play(){
         ShellExecute(NULL, NULL, _T("www.just-fucking-google.it/?s=how%20to%20play%20minesweeper%20PVP%3F&e=finger"), NULL, NULL, SW_SHOWNORMAL);
+}
+void starting_game(){
+  switch (main_menu())
+    {
+    case 1:
+        play();
+        break;
+    case 2:
+        show_how_to_play();
+        break;
+    case 3:
+        break;
+    default:
+        std::cout << "there is a problem with our program" << std::endl  ; 
+    }
 }
