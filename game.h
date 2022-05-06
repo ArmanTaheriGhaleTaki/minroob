@@ -307,5 +307,5 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
     }
 }
 void show_how_to_play(){
-    std::cout << "how to play" <<std::endl; 
+    std::cout << "http://usethefuckinggoogle.com" <<std::endl; 
 }
