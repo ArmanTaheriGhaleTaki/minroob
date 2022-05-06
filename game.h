@@ -414,17 +414,21 @@ void show_how_to_play(){
         ShellExecute(NULL, NULL, _T("www.just-fucking-google.it/?s=how%20to%20play%20minesweeper%20PVP%3F&e=finger"), NULL, NULL, SW_SHOWNORMAL);
 }
 void starting_game(){
-  switch (main_menu())
-    {
-    case 1:
-        play();
-        break;
-    case 2:
-        show_how_to_play();
-        break;
-    case 3:
-        break;
-    default:
-        std::cout << "there is a problem with our program" << std::endl  ; 
+    bool continue_running_program = true ; 
+    while(continue_running_program){
+        switch (main_menu())
+        {
+        case 1:
+            play();
+            break;
+        case 2:
+            show_how_to_play();
+            break;
+        case 3:
+        continue_running_program = false ;
+            break;
+        default:
+            std::cout << "there is a problem with our program" << std::endl  ; 
+        }
     }
 }
