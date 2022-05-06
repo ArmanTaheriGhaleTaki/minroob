@@ -251,8 +251,11 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
     int mine_collected_player_1 = 0;
     int mine_collected_player_2 = 0;
     std::map<bool,int> players_status ; 
+    std::map<bool,bool> player_exit_the_game ;  
     players_status[true] = mine_collected_player_1;
     players_status[false] = mine_collected_player_2;
+    player_exit_the_game[true] = false ;
+    player_exit_the_game[false] = false ;  
     bool running = true;
     bool running_arrowkey;
     bool round = true;
@@ -261,7 +264,17 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
         system("cls");
         std::cout << player_1_name << ": " << players_status[true] << "\n";
         std::cout << player_2_name << ": " << players_status[false] << "\n";
-        if(players_status[true]==(mines/2)+1 || players_status[false] == (mines/2)+1 ){
+        if(player_exit_the_game[true] || player_exit_the_game[false]){
+            if(player_exit_the_game[true]){
+                std::cout << "player " << player_2_name << " is winner :) because " << player_1_name << " has exited the game.\n";
+            }
+            else {
+                std::cout << "player " << player_1_name << " is winner :) because " << player_2_name << " has exited the game.\n";
+            }
+            running = false ; 
+        }
+        else {
+                      if(players_status[true]==(mines/2)+1 || players_status[false] == (mines/2)+1 ){
              if(players_status[true]==players_status[false]){
                std::cout << "both of you are winner :D " ; 
              }
@@ -386,14 +399,13 @@ void play(vector<vector<myfield>> Field, int rows, int column, int mines)
         }
         else {
             if(ch == 27 || ch==120){
+                player_exit_the_game[round] = true ;
                 running_arrowkey = false ;
-                running = false ;
-                system("cls") ; 
-                std::cout << "bye bye game :)" ; 
             }
         }
         
     }
+        }
         }
         }
     }
